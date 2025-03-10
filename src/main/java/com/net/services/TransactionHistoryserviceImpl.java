@@ -1,5 +1,7 @@
 package com.net.services;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,8 @@ public class TransactionHistoryserviceImpl implements TransactionHistoryService{
 	private TransactionsRepository historyService;
 	
 	@Override
-	public List<Transactions> getTransactionHistoryBasedOnCustId(Integer customerid) {
-		return historyService.getTransactionHistoryBasedOnCustId(customerid);
+	public List<Transactions> getTransactionHistoryBasedOnCustId(Integer customerid,Date start,Date end) {
+		return historyService.getTransactionHistoryBasedOnCustId(customerid,start,end);
 	}
 
 }

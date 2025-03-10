@@ -178,13 +178,13 @@ function validateForm(event) {
             <a href="#" class="fpassword">Forgot Password?</a> 
             <br><br>
             <button type="submit" class="button">Login</button>
-            <button type="button" class="button" onclick="window.location.href='registrationpage'">New User Registration</button>
+            <button type="button" class="button" onclick="window.location.href='registercustomer'">New User Registration</button>
         </form>
 
         <div class="footer">
-            <a href="#">Help</a> 
-            <a href="#">About Us</a> 
-            <a href="#">Privacy Policy</a>
+            <a href="/help">Help</a> 
+            <a href="/aboutus">About Us</a> 
+            <a href="/privacypolicy">Privacy Policy</a>
         </div>
     </div>
 

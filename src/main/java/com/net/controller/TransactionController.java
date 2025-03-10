@@ -1,12 +1,15 @@
 package com.net.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -25,29 +28,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-public class TrasactionController {  // Fixed spelling
+public class TransactionController {
 
-	@RequestMapping("/transactionfile")
-	public String transactionPage() {
-		return "transactionfile";  // This should match the JSP file name
-	}
+    @RequestMapping("/transactionfile")
+    public String transactionPage() {
+        return "transactionfile";
+    }
 
-//	@Autowired
-//	private TransactionHistoryService historyService;
-//	@PostMapping("/downloadtransactionhistoryfile")
-//	public String tHistory(Model model, HttpSession session) {
-//		Integer custid = (Integer) session.getAttribute("custID"); // Assuming static customer ID (consider getting from session)
-//		List<Transactions> list = historyService.getTransactionHistoryBasedOnCustId(custid);
-//		model.addAttribute("history", list);
-//		return "transactionhistorypdfreport";
-//	}
-	
-	
-	@Autowired
+    @Autowired
     private TransactionHistoryService historyService;
 
     @PostMapping("/downloadtransactionhistoryfile")
-    public void generateTransactionPDF(HttpSession session, HttpServletResponse response) throws IOException {
+    public void generateTransactionPDF(HttpSession session, HttpServletResponse response, 
+                                       @RequestParam("firstdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String firstdateStr,
+                                       @RequestParam("lastdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String lastdateStr) 
+                                       throws IOException {
         Integer customerId = (Integer) session.getAttribute("custID");
 
         if (customerId == null) {
@@ -55,7 +50,11 @@ public class TrasactionController {  // Fixed spelling
             return;
         }
 
-        List<Transactions> transactions = historyService.getTransactionHistoryBasedOnCustId(customerId);
+        // Convert String to SQL Date
+        Date firstdate = Date.valueOf(firstdateStr);
+        Date lastdate = Date.valueOf(lastdateStr);
+
+        List<Transactions> transactions = historyService.getTransactionHistoryBasedOnCustId(customerId, firstdate, lastdate);
 
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=Transaction_History.pdf");
@@ -73,12 +72,12 @@ public class TrasactionController {  // Fixed spelling
             document.add(title);
 
             // Table
-            PdfPTable table = new PdfPTable(7);
+            PdfPTable table = new PdfPTable(8);
             table.setWidthPercentage(100);
             table.setSpacingBefore(10);
             table.setSpacingAfter(10);
             
-            String[] headers = { "Transaction ID", "Date & Time", "Type", "Account Number", "Amount", "Balance", "Status" };
+            String[] headers = { "Transaction ID", "Date", "Time", "Type", "Account Number", "Amount", "Balance", "Status" };
             for (String header : headers) {
                 PdfPCell cell = new PdfPCell(new Phrase(header, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
                 cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -89,7 +88,8 @@ public class TrasactionController {  // Fixed spelling
             if (transactions != null) {
                 for (Transactions t : transactions) {
                     table.addCell(String.valueOf(t.getTransactionid()));
-                    table.addCell(t.getTransactiondatetime() != null ? t.getTransactiondatetime().toString() : "N/A");
+                    table.addCell(t.getTransactiondate() != null ? t.getTransactiondate().toString() : "N/A");
+                    table.addCell(t.getTransactiontime() != null ? t.getTransactiontime().toString() : "N/A");
                     table.addCell(t.getTransactiontype());
                     table.addCell(t.getAccountnumber());
                     table.addCell(String.valueOf(t.getProcessingamount()));

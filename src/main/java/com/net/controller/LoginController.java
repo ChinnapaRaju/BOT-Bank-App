@@ -42,4 +42,19 @@ public class LoginController {
 			return "redirect:/welcomepage";
 		}
 	}
+
+	@RequestMapping("/help")
+	public String help() {
+		return "help";
+	}
+
+	@RequestMapping("/aboutus")
+	public String aboutUs() {
+		return "aboutus";
+	}
+
+	@RequestMapping("/privacypolicy")
+	public String PP() {
+		return "privacypolicy";
+	}
 }
