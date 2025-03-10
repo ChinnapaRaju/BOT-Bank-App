@@ -270,7 +270,7 @@ body {
 <body>
 	<form>
 		<nav class="navbar">
-			<div class="navbar-logo">OnlineBanking</div>
+			<div class="navbar-logo">BOT</div>
 
 			<ul class="navbar-list">
 				<li><a href="#">Account</a></li>
