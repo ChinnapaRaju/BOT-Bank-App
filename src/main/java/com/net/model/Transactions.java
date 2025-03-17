@@ -17,6 +17,14 @@ import jakarta.validation.constraints.Pattern;
 @Table(name = "transactions")
 public class Transactions {
 
+	@Override
+	public String toString() {
+		return "Transactions [transactionid=" + transactionid + ", customerid=" + customerid + ", transactiondate="
+				+ transactiondate + ", transactiontime=" + transactiontime + ", transactiontype=" + transactiontype
+				+ ", accountnumber=" + accountnumber + ", processingamount=" + processingamount + ", balance=" + balance
+				+ ", status=" + status + "]";
+	}
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Use IDENTITY for MySQL AUTO_INCREMENT
     @Column(name = "transactionid")
