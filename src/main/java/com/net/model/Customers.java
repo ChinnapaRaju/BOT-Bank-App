@@ -151,4 +151,14 @@ public class Customers {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+	@Override
+	public String toString() {
+		return "Customers [customerid=" + customerid + ", customerphonenumber=" + customerphonenumber
+				+ ", customerpassword=" + customerpassword + ", customermail=" + customermail + ", fullname=" + fullname
+				+ ", aadhaarnumber=" + aadhaarnumber + ", pannumber=" + pannumber + ", address=" + address
+				+ ", dateofbirth=" + dateofbirth + ", gender=" + gender + "]";
+	}
+    
+    
 }
