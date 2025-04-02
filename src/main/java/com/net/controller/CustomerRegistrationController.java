@@ -6,9 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.net.model.Customers;
+import com.net.model.Customer;
 import com.net.repo.CustomersRepository;
+import com.net.services.OTP;
 
 @Controller
 public class CustomerRegistrationController {
@@ -16,32 +18,38 @@ public class CustomerRegistrationController {
     @Autowired
     private CustomersRepository customersRepository;
 
-    // Display registration form
+    @Autowired
+    private OTP otpService; // Autowire OTP service
+
     @GetMapping("/registercustomer")
     public String showRegisterCustomer(Model model) {
-        model.addAttribute("cust", new Customers());
-        return "customerregistrationfile"; // JSP file name
+        model.addAttribute("cust", new Customer());
+        return "customerregistrationfile";
     }
 
-    // Handle customer registration
     @PostMapping("/registercustomer")
-    public String customerRegistration(@ModelAttribute("cust") Customers cust, Model model) {
+    public String customerRegistration(@ModelAttribute("cust") Customer cust,
+                                       @RequestParam(value = "otpVerified", required = false, defaultValue = "false") boolean otpVerified,
+                                       Model model) {
         try {
-            // Check if the email or phone number already exists
-            if (customersRepository.existsByCustomermail(cust.getAadhaarnumber()) || 
-                customersRepository.existsByCustomerphonenumber(cust.getCustomerphonenumber())) {
-                model.addAttribute("error", "The Customer is already registered plz Login.");
-                return "customerregistrationfile"; // Reload form with error
+            if (customersRepository.existsByCustomermail(cust.getCustomermail()) ||
+                    customersRepository.existsByCustomerphonenumber(cust.getCustomerphonenumber())) {
+                model.addAttribute("error", "The Customer is already registered. Please log in.");
+                return "customerregistrationfile";
             }
-            
-            // Save customer
-            Integer idd= customersRepository.save(cust).getCustomerid();
-            String pass=cust.getCustomerpassword();
-            model.addAttribute("message", "Registration successful! Please login.");
-            return "welcomepage"; // Redirect to welcome page
+
+            if (!otpVerified) {
+                model.addAttribute("error", "OTP verification failed. Please try again.");
+                return "customerregistrationfile";
+            }
+
+           Customer customer= customersRepository.save(cust);
+            otpService.sendCustomerDetails(customer.getCustomerid(), customer.getCustomerpassword());
+            model.addAttribute("message", "Registration successful! Please log in.");
+            return "welcomepage";
         } catch (Exception e) {
             model.addAttribute("error", "Registration failed! Please try again.");
-            return "customerregistrationfile"; // Reload form with error
+            return "customerregistrationfile";
         }
     }
 }

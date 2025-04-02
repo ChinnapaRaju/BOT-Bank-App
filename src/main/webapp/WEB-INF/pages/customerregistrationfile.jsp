@@ -5,105 +5,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Registration</title>
-    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 70px 0; /* Added space at the top and bottom */
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 70px 0;
+    }
 
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 500px;
-            text-align: center;
-            margin: 40px 0; /* Space above and below the form */
-        }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 500px;
+        text-align: center;
+        margin: 40px 0;
+    }
 
-        h2 {
-            color: #333;
-        }
+    h2 {
+        color: #333;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-        }
+    form {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
 
-        label {
-            font-weight: bold;
-            margin: 10px 0 5px;
-        }
+    label {
+        font-weight: bold;
+        margin: 10px 0 5px;
+    }
 
-        input, select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
+    input,
+    select,
+    button {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
 
-        input[type="submit"] {
-            margin-top: 15px;
-            background-color: #28a745;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-        }
+    input[type="submit"],
+    .otp-btn {
+        margin-top: 15px;
+        background-color: #28a745;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+    }
 
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
+    input[type="submit"]:hover,
+    .otp-btn:hover {
+        background-color: #218838;
+    }
 
-        .alert {
-            padding: 10px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+    .alert {
+        padding: 10px;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
 
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
 
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
 
-        .login-btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 4px;
-        }
+    .login-btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 4px;
+    }
 
-        .login-btn:hover {
-            background-color: #0056b3;
-        }
-        
-        /* Added for validation messages */
-        .validation-error {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .otp-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .otp-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+    }
+
+    .otp-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .validation-error {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    /* Style to hide elements initially */
+    .hidden {
+        display: none;
+    }
     </style>
 </head>
 <body>
@@ -111,12 +137,16 @@
     <div class="container">
         <h2>Customer Registration</h2>
 
-        <% if (request.getAttribute("error") != null) { %>
-            <div class="alert alert-danger"><%= request.getAttribute("error") %></div>
+        <% if (request.getAttribute("error")!= null) { %>
+        <div class="alert alert-danger">
+            <%= request.getAttribute("error") %>
+        </div>
         <% } %>
 
-        <% if (request.getAttribute("message") != null) { %>
-            <div class="alert alert-success"><%= request.getAttribute("message") %></div>
+        <% if (request.getAttribute("message")!= null) { %>
+        <div class="alert alert-success">
+            <%= request.getAttribute("message") %>
+        </div>
         <% } %>
 
         <form action="registercustomer" method="post" id="registerForm">
@@ -129,8 +159,19 @@
             <div class="validation-error" id="phonenumberError"></div>
 
             <label>Email:</label>
-            <input type="email" name="customermail" id="email" required>
+            <div class="otp-container">
+                <input type="email" name="customermail" id="email" required>
+                <button type="button" class="otp-btn" onclick="sendOTP()">Send OTP</button>
+            </div>
             <div class="validation-error" id="emailError"></div>
+
+            <!-- OTP input initially hidden -->
+            <div id="otpSection" class="hidden">
+                <label>Enter OTP:</label>
+                <input type="text" name="otp" id="otp">
+                <div class="validation-error" id="otpError"></div>
+                <button type="button" class="otp-btn" onclick="verifyOTP()">Verify OTP</button>
+            </div>
 
             <label>Password:</label>
             <input type="password" name="customerpassword" id="password" required>
@@ -160,93 +201,80 @@
             </select>
             <div class="validation-error" id="genderError"></div>
 
-            <input type="submit" value="Register">
+            <input type="hidden" name="otpVerified" id="otpVerified" value="false">
+
+            <input type="submit" value="Register" id="registerButton" disabled>
         </form>
 
         <a href="welcomepage" class="login-btn">Already have an account? Login</a>
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            let isValid = true;
+    let isOTPVerified = false;
 
-            // Full Name Validation
-            const fullname = document.getElementById('fullname').value;
-            if (!/^[A-Za-z .]+$/.test(fullname)) {
-                document.getElementById('fullnameError').innerText = 'Only letters, spaces, and periods are allowed.';
-                isValid = false;
-            } else {
-                document.getElementById('fullnameError').innerText = '';
-            }
+    function sendOTP() {
+        const email = document.getElementById("email").value;
+        if (!email) {
+            document.getElementById("emailError").innerText = "Please enter an email first.";
+            return;
+        }
+        document.getElementById("emailError").innerText = "";
 
-            // Phone Number Validation
-            const phonenumber = document.getElementById('phonenumber').value;
-            if (!/^\d{10}$/.test(phonenumber)) {
-                document.getElementById('phonenumberError').innerText = 'Phone number must be 10 digits.';
-                isValid = false;
-            } else {
-                document.getElementById('phonenumberError').innerText = '';
-            }
+        fetch("http://localhost:8688/customerotp/send?email=" + encodeURIComponent(email), {
+                method: "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("OTP sent to your email.");
+                    // Show OTP input section after sending OTP
+                    document.getElementById("otpSection").classList.remove("hidden");
+                } else {
+                    alert("Failed to send OTP: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error sending OTP:", error);
+                alert("Error sending OTP. Please check the console.");
+            });
+    }
 
-            // Email Validation
-            const email = document.getElementById('email').value;
-            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-                document.getElementById('emailError').innerText = 'Invalid email format.';
-                isValid = false;
-            } else {
-                document.getElementById('emailError').innerText = '';
-            }
+    function verifyOTP() {
+        const otp = document.getElementById("otp").value;
+        const email = document.getElementById("email").value;
 
-            // Password Validation
-            const password = document.getElementById('password').value;
-            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/.test(password)) {
-                document.getElementById('passwordError').innerText = 'Password must be 8-30 characters, with at least one uppercase, one lowercase, and one digit.';
-                isValid = false;
-            } else {
-                document.getElementById('passwordError').innerText = '';
-            }
+        fetch("http://localhost:8688/customerotp/verify?email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp), {
+                method: "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("OTP verified successfully. You can now register.");
+                    isOTPVerified = true;
+                    document.getElementById("otpVerified").value = "true";
+                    document.getElementById("registerButton").disabled = false; // Enable registration button
+                } else {
+                    alert("Invalid OTP. Please verify again.");
+                    isOTPVerified = false;
+                    document.getElementById("otpVerified").value = "false";
+                    document.getElementById("registerButton").disabled = true; // Ensure button is disabled
+                }
+            })
+            .catch(error => {
+                console.error("Error verifying OTP:", error);
+                alert("Error verifying OTP. Please check the console.");
+                isOTPVerified = false;
+                document.getElementById("otpVerified").value = "false";
+                document.getElementById("registerButton").disabled = true; // Ensure button is disabled
+            });
+    }
 
-            // Aadhaar Number Validation
-            const aadhaar = document.getElementById('aadhaar').value;
-            if (!/^\d{12}$/.test(aadhaar)) {
-                document.getElementById('aadhaarError').innerText = 'Aadhaar number must be exactly 12 digits.';
-                isValid = false;
-            } else {
-                document.getElementById('aadhaarError').innerText = '';
-            }
-
-            // PAN Number Validation
-            const pan = document.getElementById('pan').value;
-            if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan)) {
-                document.getElementById('panError').innerText = 'Invalid PAN format.';
-                isValid = false;
-            } else {
-                document.getElementById('panError').innerText = '';
-            }
-
-            // Address Validation
-            const address = document.getElementById('address').value;
-            if (address.length > 100) {
-                document.getElementById('addressError').innerText = 'Address cannot exceed 100 characters.';
-                isValid = false;
-            } else {
-                document.getElementById('addressError').innerText = '';
-            }
-
-            // Date of Birth Validation
-            const dob = new Date(document.getElementById('dob').value);
-            const today = new Date();
-            if (dob >= today) {
-                document.getElementById('dobError').innerText = 'Date of birth must be in the past.';
-                isValid = false;
-            } else {
-                document.getElementById('dobError').innerText = '';
-            }
-
-            if (!isValid) {
-                e.preventDefault();
-            }
-        });
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        if (!isOTPVerified) {
+            alert("Please verify OTP before registering.");
+            e.preventDefault(); // Prevent form submission
+        }
+    });
     </script>
 
 </body>

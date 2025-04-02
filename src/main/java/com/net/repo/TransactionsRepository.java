@@ -12,7 +12,7 @@ import com.net.model.Transactions;
 @Repository
 public interface TransactionsRepository extends JpaRepository<Transactions, Integer> {
 
-	@Query("SELECT t FROM Transactions t WHERE t.customerid = :customerid AND t.transactiondate BETWEEN :start AND :end")
-	List<Transactions> getTransactionHistoryBasedOnCustId(Integer customerid, Date start, Date end);
-
+    // Query to fetch transaction history for a customer within a date range
+    @Query("SELECT t FROM Transactions t WHERE t.customer.customerid = :customerid AND t.transactiondate BETWEEN :start AND :end")
+    List<Transactions> getTransactionHistoryBasedOnCustId(Integer customerid, Date start, Date end);
 }
