@@ -30,19 +30,19 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class TransactionController {
 
-    @RequestMapping("/transactionfile")
-    public String transactionPage() {
-        return "transactionfile";
-    }
-
     @Autowired
     private TransactionHistoryService historyService;
 
+    @RequestMapping("/transactionfile")
+    public String transactionPage() {
+        return "transactionfile"; // JSP file name
+    }
+
     @PostMapping("/downloadtransactionhistoryfile")
-    public void generateTransactionPDF(HttpSession session, HttpServletResponse response, 
+    public void generateTransactionPDF(HttpSession session, HttpServletResponse response,
                                        @RequestParam("firstdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String firstdateStr,
-                                       @RequestParam("lastdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String lastdateStr) 
-                                       throws IOException {
+                                       @RequestParam("lastdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String lastdateStr)
+            throws IOException {
         Integer customerId = (Integer) session.getAttribute("custID");
 
         if (customerId == null) {
@@ -76,7 +76,7 @@ public class TransactionController {
             table.setWidthPercentage(100);
             table.setSpacingBefore(10);
             table.setSpacingAfter(10);
-            
+
             String[] headers = { "Transaction ID", "Date", "Time", "Type", "Account Number", "Amount", "Balance", "Status" };
             for (String header : headers) {
                 PdfPCell cell = new PdfPCell(new Phrase(header, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
@@ -85,7 +85,7 @@ public class TransactionController {
                 table.addCell(cell);
             }
 
-            if (transactions != null) {
+            if (transactions != null && !transactions.isEmpty()) {
                 for (Transactions t : transactions) {
                     table.addCell(String.valueOf(t.getTransactionid()));
                     table.addCell(t.getTransactiondate() != null ? t.getTransactiondate().toString() : "N/A");
@@ -96,6 +96,11 @@ public class TransactionController {
                     table.addCell(t.getBalance() != null ? String.valueOf(t.getBalance()) : "N/A");
                     table.addCell(t.getStatus());
                 }
+            } else {
+                PdfPCell noDataCell = new PdfPCell(new Phrase("No transactions found", new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC)));
+                noDataCell.setColspan(8);
+                noDataCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(noDataCell);
             }
 
             document.add(table);

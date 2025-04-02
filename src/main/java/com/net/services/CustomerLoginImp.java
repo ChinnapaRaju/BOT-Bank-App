@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.net.model.Customers;
+import com.net.model.Customer;
 import com.net.repo.CustomersRepository;
 
 @Service
@@ -16,7 +16,7 @@ public class CustomerLoginImp implements CustomerLoginService {
 
     @Override
     public boolean CustomerLogin(Integer customerid, String customerpassword) {
-        Optional<Customers> customer = custrepo.CustomerLoginVerification(customerid, customerpassword);
+        Optional<Customer> customer = custrepo.CustomerLoginVerification(customerid, customerpassword);
         return customer.isPresent();
     }
 }
