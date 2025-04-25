@@ -15,5 +15,9 @@ public class BotInternetBankApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BotInternetBankApplication.class, args);
 	}
+	
+	public void raju() {
+		System.out.println("raju");
+	}
 
 }
